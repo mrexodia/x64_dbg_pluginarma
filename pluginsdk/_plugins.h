@@ -11,6 +11,9 @@
 
 #include "_plugin_types.h"
 
+//defines
+#define PLUG_SDKVERSION 1
+
 //structures
 struct PLUG_INITSTRUCT
 {
@@ -139,6 +142,7 @@ PLUG_IMPEXP bool _plugin_registercommand(int pluginHandle, const char* command, 
 PLUG_IMPEXP bool _plugin_unregistercommand(int pluginHandle, const char* command);
 PLUG_IMPEXP void _plugin_logprintf(const char* format, ...);
 PLUG_IMPEXP void _plugin_logputs(const char* text);
+PLUG_IMPEXP void _plugin_debugpause();
 
 #ifdef __cplusplus
 }

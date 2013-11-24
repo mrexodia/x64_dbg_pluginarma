@@ -10,6 +10,7 @@
 
 //superglobal variables
 extern int hPlugin;
+extern PROCESS_INFORMATION* fdProcessInfo;
 
 #ifdef __cplusplus
 extern "C"

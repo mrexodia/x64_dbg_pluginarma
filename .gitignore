@@ -1,2 +1,10 @@
 bin/*
 obj/*
+Win32/*
+x64/*
+ipch/*
+*.bmarks
+*.depend
+*.layout
+*.sdf
+*.suo
