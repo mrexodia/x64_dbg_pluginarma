@@ -1,0 +1,13 @@
+Description:
+This plugin intends to aid you in unpacking Armadillo with x64_dbg.
+
+Installation:
+Copy arma.dp32/arma.dp64 in the /plugins directory of x64_dbg.
+
+Usage:
+- armasec
+  Call this function from the entry point to reach Security.DLL
+- armaccess addr[,patch]
+  Call this function to search for the 'ArmAccess' string. Specify
+  a non-zero value for patch to automatically patch this entry.
+
