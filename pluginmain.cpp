@@ -30,6 +30,7 @@ DLL_EXPORT bool pluginit(PLUG_INITSTRUCT* initStruct)
     _plugin_registercallback(hPlugin, CB_CREATEPROCESS, cbCreateProcess);
     _plugin_registercallback(hPlugin, CB_EXITPROCESS, cbExitProcess);
     _plugin_registercommand(hPlugin, "armasec", cbArmaSec, true);
+    _plugin_registercommand(hPlugin, "armaccess", cbArmAccess, true);
     return true;
 }
 
