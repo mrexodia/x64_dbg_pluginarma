@@ -51,6 +51,7 @@
 		<Unit filename="pluginmain.cpp" />
 		<Unit filename="pluginmain.h" />
 		<Unit filename="pluginsdk/TitanEngine/TitanEngine.h" />
+		<Unit filename="pluginsdk/_dbgfunctions.h" />
 		<Unit filename="pluginsdk/_plugin_types.h" />
 		<Unit filename="pluginsdk/_plugins.h" />
 		<Unit filename="pluginsdk/bridgemain.h" />

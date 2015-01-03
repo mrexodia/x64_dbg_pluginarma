@@ -11,14 +11,17 @@
 static void cbVirtualProtect()
 {
     duint cip=GetContextData(UE_CIP);
+    duint sec_addr=GetFunctionParameter(fdProcessInfo->hProcess, UE_FUNCTION_STDCALL, 1, UE_PARAMETER_DUINT);
+    unsigned short header_code=0;
+    if(!ReadProcessMemory(fdProcessInfo->hProcess, (void*)(sec_addr-0x1000), &header_code, sizeof(header_code), 0) || header_code != 0x5A4D)
+        return;
     DeleteBPX(cip);
     _plugin_logputs("[ARMASEC] VirtualProtect breakpoint reached!");
-    duint sec_addr=GetFunctionParameter(fdProcessInfo->hProcess, UE_FUNCTION_STDCALL, 1, UE_PARAMETER_DUINT);
     char varcmd[256]="";
 #ifdef _WIN64
-    sprintf(varcmd, "$result=%llX", sec_addr);
+    sprintf_s(varcmd, "$result=%llX", sec_addr);
 #else
-    sprintf(varcmd, "$result=%X", sec_addr);
+    sprintf_s(varcmd, "$result=%X", sec_addr);
 #endif // _WIN64
     DbgCmdExec(varcmd);
     GuiDisasmAt(sec_addr, cip);
@@ -88,7 +91,7 @@ bool cbArmAccess(int argc, char* argv[])
         patch=DbgValFromString(argv[2]);
     duint secsize=0;
     secaddr=DbgMemFindBaseAddr(secaddr, &secsize);
-    if(!secaddr or !secsize)
+    if(!secaddr || !secsize)
     {
         _plugin_logputs("[ARMASEC] Invalid memory region!");
         return false;

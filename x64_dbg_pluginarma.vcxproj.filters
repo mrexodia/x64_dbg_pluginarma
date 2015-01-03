@@ -50,5 +50,8 @@
     <ClInclude Include="armasec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pluginsdk\_dbgfunctions.h">
+      <Filter>Header Files\pluginsdk</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -25,7 +25,7 @@ DLL_EXPORT bool pluginit(PLUG_INITSTRUCT* initStruct)
 {
     initStruct->pluginVersion=plugin_version;
     initStruct->sdkVersion=plugin_sdkversion;
-    strcpy(initStruct->pluginName, plugin_name);
+    strcpy_s(initStruct->pluginName, plugin_name);
     hPlugin=initStruct->pluginHandle;
     _plugin_registercallback(hPlugin, CB_CREATEPROCESS, cbCreateProcess);
     _plugin_registercallback(hPlugin, CB_EXITPROCESS, cbExitProcess);

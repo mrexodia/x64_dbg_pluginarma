@@ -19,6 +19,7 @@
     <ClInclude Include="pluginmain.h" />
     <ClInclude Include="pluginsdk\bridgemain.h" />
     <ClInclude Include="pluginsdk\TitanEngine\TitanEngine.h" />
+    <ClInclude Include="pluginsdk\_dbgfunctions.h" />
     <ClInclude Include="pluginsdk\_plugins.h" />
     <ClInclude Include="pluginsdk\_plugin_types.h" />
     <ClInclude Include="test.h" />
@@ -46,15 +47,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\x32</OutDir>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\x32\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <TargetName>arma</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\x64</OutDir>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\x64\</OutDir>
     <TargetName>arma</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
