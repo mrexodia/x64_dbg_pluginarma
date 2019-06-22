@@ -128,6 +128,76 @@ bool cbArmAccess(int argc, char* argv[])
             }
         }
     }
+    if(!found)
+        _plugin_logputs("[ARMASEC] Nothing found...");
     BridgeFree(secdata);
+    return true;
+}
+
+bool cbArmaIat(int argc, char* argv[])
+{
+    if(argc<2)
+    {
+        _plugin_logputs("[ARMASEC] not enough arguments!");
+        return false;
+    }
+    duint secaddr=DbgValFromString(argv[1]);
+    duint patch=0;
+    if(argc>2)
+        patch=DbgValFromString(argv[2]);
+    duint secsize=0;
+    duint secbase=DbgMemFindBaseAddr(secaddr, &secsize);
+    if(!secbase or !secsize)
+    {
+        _plugin_logputs("[ARMASEC] Invalid memory region!");
+        return false;
+    }
+    secsize-=secaddr-secbase;
+#ifdef _WIN64
+    _plugin_logprintf("[ARMASEC] Searching from 0x%llX, size 0x%llX...\n", secaddr, secsize);
+    unsigned char searchPattern[6]= {0x41, 0xB8, 0x00, 0x01, 0x00, 0x00};
+    unsigned char patchedPattern[6]= {0x41, 0xB8, 0x00, 0x00, 0x00, 0x00};
+#else
+    _plugin_logprintf("[ARMASEC] Searching from 0x%X, size 0x%X...\n", secaddr, secsize);
+    unsigned char searchPattern[5]= {0x68, 0x00, 0x01, 0x00, 0x00};
+    unsigned char patchedPattern[5]= {0x68, 0x00, 0x00, 0x00, 0x00};
+#endif // _WIN64
+    unsigned char* secdata=(unsigned char*)BridgeAlloc(secsize);
+    DbgMemRead(secaddr, secdata, secsize);
+    int found=0;
+    for(duint i=0; i<secsize; i++)
+    {
+        if(!memcmp(secdata+i, searchPattern, sizeof(searchPattern)))
+        {
+            found++;
+#ifdef _WIN64
+            _plugin_logprintf("[ARMASEC] Found IAT Redirection at 0x%llX!\n", secaddr+i);
+#else
+            _plugin_logprintf("[ARMASEC] Found IAT Redirection at 0x%X!\n", secaddr+i);
+#endif // _WIN64
+            if(patch)
+            {
+                if(WriteProcessMemory(fdProcessInfo->hProcess, (void*)(secaddr+i), patchedPattern, sizeof(patchedPattern), 0))
+#ifdef _WIN64
+                    _plugin_logprintf("[ARMASEC] Patched IAT Redirection at 0x%llX!\n", secaddr+i);
+#else
+                    _plugin_logprintf("[ARMASEC] Patched IAT Redirection at 0x%X!\n", secaddr+i);
+#endif // _WIN64
+            }
+            break;
+        }
+        else if(!memcmp(secdata+i, patchedPattern, sizeof(patchedPattern)))
+        {
+#ifdef _WIN64
+            _plugin_logprintf("[ARMASEC] IAT Redirection already patched 0x%llX!\n", secaddr+i);
+#else
+            _plugin_logprintf("[ARMASEC] IAT Redirection already patched at 0x%X!\n", secaddr+i);
+#endif // _WIN64
+        }
+    }
+    if(!found)
+        _plugin_logputs("[ARMASEC] Nothing found...");
+    BridgeFree(secdata);
+    GuiUpdateDisassemblyView();
     return true;
 }

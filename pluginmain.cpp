@@ -7,18 +7,19 @@
 #define plugin_sdkversion 1
 
 int hPlugin;
+PROCESS_INFORMATION fdProcessInfo_;
 PROCESS_INFORMATION* fdProcessInfo;
 
 static void cbCreateProcess(CBTYPE type, void* callbackInfo)
 {
     PLUG_CB_CREATEPROCESS* info=(PLUG_CB_CREATEPROCESS*)callbackInfo;
-    fdProcessInfo=(PROCESS_INFORMATION*)malloc(sizeof(PROCESS_INFORMATION));
+    fdProcessInfo=&fdProcessInfo_;
     memcpy(fdProcessInfo, info->fdProcessInfo, sizeof(PROCESS_INFORMATION));
 }
 
 static void cbExitProcess(CBTYPE type, void* callbackInfo)
 {
-    free(fdProcessInfo);
+    fdProcessInfo=0;
 }
 
 DLL_EXPORT bool pluginit(PLUG_INITSTRUCT* initStruct)
@@ -31,6 +32,7 @@ DLL_EXPORT bool pluginit(PLUG_INITSTRUCT* initStruct)
     _plugin_registercallback(hPlugin, CB_EXITPROCESS, cbExitProcess);
     _plugin_registercommand(hPlugin, "armasec", cbArmaSec, true);
     _plugin_registercommand(hPlugin, "armaccess", cbArmAccess, true);
+    _plugin_registercommand(hPlugin, "armaiat", cbArmaIat, true);
     return true;
 }
 
